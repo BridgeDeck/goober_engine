@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://b7pqsh2tpt6uq"]
+
+[ext_resource type="Script" uid="uid://cjyr6cairiu5n" path="res://main.gd" id="1_lquwl"]
+[ext_resource type="PackedScene" uid="uid://5agc6aosqxuv" path="res://goobers/monika.scn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://ct2vqxhyoq2o8" path="res://goobers/natsuki.scn" id="4_lquwl"]
+[ext_resource type="PackedScene" uid="uid://b2slsncm8f8cy" path="res://goobers/sayori.scn" id="5_7mycd"]
+[ext_resource type="PackedScene" uid="uid://b7nxaa5ci605" path="res://goobers/yuri.scn" id="6_7mycd"]
+
+[node name="Node" type="Node"]
+script = ExtResource("1_lquwl")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = -69.0
+offset_top = -51.0
+offset_right = 2056.0
+offset_bottom = 1205.0
+color = Color(0, 0, 0, 0.09803922)
+
+[node name="Goober2" parent="." instance=ExtResource("4_lquwl")]
+position = Vector2(91, 195)
+
+[node name="Goober3" parent="." instance=ExtResource("5_7mycd")]
+position = Vector2(750, 360)
+
+[node name="Goober4" parent="." instance=ExtResource("6_7mycd")]
+position = Vector2(291, 351)
+
+[node name="Goober" parent="." instance=ExtResource("4_1bvp3")]
+process_priority = 1
+position = Vector2(550, 71)
