@@ -22,18 +22,23 @@ config/icon="res://icon.svg"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/mode=3
+window/size/mode=2
 window/size/resizable=false
 window/size/always_on_top=true
 window/size/transparent=true
+window/size/no_focus=true
+window/subwindows/embed_subwindows=false
 window/per_pixel_transparency/allowed=true
 
 [global_group]
 
 entity_goober=""
 
+[input_devices]
+
+pointing/emulate_mouse_from_touch=false
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-viewport/transparent_background=true

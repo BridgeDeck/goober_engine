@@ -7,7 +7,11 @@ const BOTTOMRIGHT = Vector2(-1, 1)
 const EXTENTS = 100
 
 func _ready() -> void:
-	get_window().mouse_passthrough = true
+	$Settings/VBoxContainer/Button.pressed.connect(func():
+		var l = Label.new()
+		l.text = "YOU ARE AN IDIOT. HAHAHAHA."
+		$Settings/VBoxContainer.add_child(l)
+		)
 
 # From smallest x to largest x position
 func sort_x_position(input:Array[Node2D])->Array[Node2D]:
@@ -43,7 +47,7 @@ func _process(delta: float) -> void:
 	# var bottomright:Vector2 = get_viewport_rect().size/2
 
 	var passarea:Rect2 = Rect2()
-	passarea.position = get_viewport_rect().size
+	passarea.position = get_viewport().get_visible_rect().size
 
 	var goobers:Array[Node2D] = []
 	goobers.append_array(get_tree().get_nodes_in_group(&"entity_goober"))
@@ -53,19 +57,6 @@ func _process(delta: float) -> void:
 		var goober:Goober = g
 		
 		for v in goober.blocking:
-			# var greaterthan_topleft = v.x < topleft.x and v.y < topleft.y
-			# var greaterthan_topright = v.x > topright.x and v.y < topright.y
-			# var greaterthan_bottomright = v.x > bottomright.x and v.y > bottomright.y
-			# var greaterthan_bottomleft = v.x < bottomleft.x and v.y > bottomleft.y
-
-			# if greaterthan_topright:
-			# 	topright = v
-			# if greaterthan_topleft:
-			# 	topleft = v
-			# if greaterthan_bottomleft:
-			# 	bottomleft = v
-			# if greaterthan_bottomright:
-			# 	bottomright = v
 
 			if v.x < passarea.position.x:
 				passarea.position.x = v.x
@@ -85,11 +76,12 @@ func _process(delta: float) -> void:
 
 	if get_window().has_focus():
 		topleft = Vector2()
-		bottomleft = Vector2(0, get_viewport_rect().size.y)
+		bottomleft = Vector2(0, get_viewport().get_visible_rect().size.y)
 	
-	DisplayServer.window_set_mouse_passthrough([
+	get_window().mouse_passthrough = false
+	get_window().mouse_passthrough_polygon = [
 		topleft,
 		topright,
 		bottomright,
 		bottomleft
-	])
+	]
