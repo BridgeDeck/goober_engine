@@ -1,4 +1,5 @@
 extends Node
+class_name MainNode
 
 const TOPLEFT = Vector2(-1, -1)
 const TOPRIGHT = Vector2(1, -1)
@@ -6,12 +7,29 @@ const BOTTOMLEFT = Vector2(1, 1)
 const BOTTOMRIGHT = Vector2(-1, 1)
 const EXTENTS = 100
 
+@onready var hardlimit_left:HSlider = $Settings/v1/WallHard/v2/Left/Value
+@onready var hardlimit_right:HSlider = $Settings/v1/WallHard/v2/Right/Value
+
+@onready var softlimit_left:HSlider = $Settings/v1/WallSoft/v2/Left/Value
+@onready var softlimit_right:HSlider = $Settings/v1/WallSoft/v2/Right/Value
+
+func setup_wallslider(slider:HSlider):
+	slider.min_value = 0.0
+	slider.max_value = get_viewport().get_visible_rect().size.x
+
 func _ready() -> void:
-	$Settings/VBoxContainer/Button.pressed.connect(func():
-		var l = Label.new()
-		l.text = "YOU ARE AN IDIOT. HAHAHAHA."
-		$Settings/VBoxContainer.add_child(l)
-		)
+	var resolution:Vector2 = get_viewport().get_visible_rect().size
+
+	setup_wallslider(softlimit_left)
+	setup_wallslider(softlimit_right)
+	setup_wallslider(hardlimit_left)
+	setup_wallslider(hardlimit_right)
+
+	hardlimit_left.value = 0.0
+	hardlimit_right.value = resolution.x
+
+	softlimit_left.value = hardlimit_left.value + 200
+	softlimit_right.value = hardlimit_right.value - 200
 
 # From smallest x to largest x position
 func sort_x_position(input:Array[Node2D])->Array[Node2D]:
@@ -41,17 +59,13 @@ func sort_x_position(input:Array[Node2D])->Array[Node2D]:
 
 func _process(delta: float) -> void:
 
-	# var topleft:Vector2 = get_viewport_rect().size/2
-	# var topright:Vector2 = get_viewport_rect().size/2
-	# var bottomleft:Vector2 = get_viewport_rect().size/2
-	# var bottomright:Vector2 = get_viewport_rect().size/2
+	var resolution:Vector2 = get_viewport().get_visible_rect().size
 
 	var passarea:Rect2 = Rect2()
-	passarea.position = get_viewport().get_visible_rect().size
+	passarea.position = resolution
 
 	var goobers:Array[Node2D] = []
 	goobers.append_array(get_tree().get_nodes_in_group(&"entity_goober"))
-	# goobers = sort_x_position(goobers)
 
 	for g in goobers:
 		var goober:Goober = g
@@ -68,15 +82,47 @@ func _process(delta: float) -> void:
 			if v.y > passarea.size.y:
 				passarea.size.y = v.y
 
-	var topleft = passarea.position
-	var topright = Vector2(passarea.size.x, passarea.position.y)
+	var topleft
+	var topright
 
-	var bottomleft = Vector2(passarea.position.x, passarea.size.y)
-	var bottomright = passarea.size
+	var bottomleft
+	var bottomright
 
+	$Settings.visible = get_window().has_focus()
+	$LimitsVisualizer.visible = get_window().has_focus()
 	if get_window().has_focus():
+		if hardlimit_left.has_focus():
+			hardlimit_left.value = clampf(hardlimit_left.value, 0.0, hardlimit_right.value)
+			softlimit_left.value = clampf(softlimit_left.value, hardlimit_left.value, hardlimit_right.value)
+			softlimit_right.value = clampf(softlimit_right.value, hardlimit_left.value, hardlimit_right.value)
+		if hardlimit_right.has_focus():
+			hardlimit_right.value = clampf(hardlimit_right.value, hardlimit_left.value, resolution.x)
+			softlimit_left.value = clampf(softlimit_left.value, hardlimit_left.value, hardlimit_right.value)
+			softlimit_right.value = clampf(softlimit_right.value, hardlimit_left.value, hardlimit_right.value)
+		
+		if softlimit_left.has_focus():
+			softlimit_left.value = clampf(softlimit_left.value, hardlimit_left.value, softlimit_right.value)
+		
+		if softlimit_right.has_focus():
+			softlimit_right.value = clampf(softlimit_right.value, softlimit_left.value, hardlimit_right.value)
+		
+		$LimitsVisualizer/SoftLimitLeft.offset_right = softlimit_left.value
+		$LimitsVisualizer/SoftLimitRight.offset_left = softlimit_right.value - resolution.x
+
+		$LimitsVisualizer/HardLimitLeft.offset_right = hardlimit_left.value
+		$LimitsVisualizer/HardLimitRight.offset_left = hardlimit_right.value - resolution.x
+
 		topleft = Vector2()
-		bottomleft = Vector2(0, get_viewport().get_visible_rect().size.y)
+		topright = Vector2(resolution.x, 0.0)
+		bottomleft = Vector2(0, resolution.y)
+		bottomright = resolution
+	else:
+		topleft = passarea.position
+		topright = Vector2(passarea.size.x, passarea.position.y)
+
+		bottomleft = Vector2(passarea.position.x, passarea.size.y)
+		bottomright = passarea.size
+
 	
 	get_window().mouse_passthrough = false
 	get_window().mouse_passthrough_polygon = [

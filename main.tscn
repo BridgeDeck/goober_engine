@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://b7pqsh2tpt6uq"]
+[gd_scene load_steps=10 format=3 uid="uid://b7pqsh2tpt6uq"]
 
 [ext_resource type="Script" uid="uid://cjyr6cairiu5n" path="res://main.gd" id="1_lquwl"]
 [ext_resource type="PackedScene" uid="uid://5agc6aosqxuv" path="res://goobers/monika.scn" id="4_1bvp3"]
@@ -6,7 +6,55 @@
 [ext_resource type="PackedScene" uid="uid://b2slsncm8f8cy" path="res://goobers/sayori.scn" id="5_7mycd"]
 [ext_resource type="PackedScene" uid="uid://b7nxaa5ci605" path="res://goobers/yuri.scn" id="6_7mycd"]
 
-[node name="Node" type="Node"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lquwl"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.4)
+draw_center = false
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7mycd"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0)
+draw_center = false
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_272bh"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 6
+
+[sub_resource type="Theme" id="Theme_lquwl"]
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_lquwl")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_7mycd")
+HSlider/styles/slider = SubResource("StyleBoxFlat_272bh")
+HSliderHardLimit/base_type = &"HSlider"
+LabelHardLimit/base_type = &"Label"
+LabelHardLimit/colors/font_color = Color(1, 0, 0, 1)
+LabelSoftLimit/base_type = &"Label"
+LabelSoftLimit/colors/font_color = Color(1, 0, 1, 1)
+
+[node name="Node" type="Node" groups=["main_node"]]
 script = ExtResource("1_lquwl")
 
 [node name="Background" type="ColorRect" parent="."]
@@ -19,32 +67,190 @@ color = Color(0, 0, 0, 0.09803922)
 
 [node name="Goober2" parent="." instance=ExtResource("4_lquwl")]
 position = Vector2(91, 195)
+time_jump_minimum = 1.0
+time_jump_maximum = 4.0
+time_topause_minimum = 7.5
+time_topause_maximum = 15.0
+time_pause_maximum = 1.0
 
 [node name="Goober3" parent="." instance=ExtResource("5_7mycd")]
 position = Vector2(750, 360)
+speed = 450.0
+accelerate = 900.0
+time_jump_minimum = 10.0
+time_jump_maximum = 25.0
+time_topause_minimum = 10.0
+time_topause_maximum = 20.0
+time_pause_maximum = 1.0
 
 [node name="Goober4" parent="." instance=ExtResource("6_7mycd")]
 position = Vector2(291, 351)
+speed = 100.0
+accelerate = 100.0
+gravity = 100.0
+jumpforce = 100.0
+time_jump_minimum = 15.0
+time_jump_maximum = 30.0
+time_topause_minimum = 20.0
+time_topause_maximum = 25.0
+time_pause_minimum = 5.0
+time_pause_maximum = 10.0
 
 [node name="Goober" parent="." instance=ExtResource("4_1bvp3")]
 process_priority = 1
 position = Vector2(550, 71)
+speed = 200.0
+accelerate = 400.0
+jumpforce = 150.0
+time_jump_minimum = 10.0
+time_jump_maximum = 10.0
+time_topause_maximum = 3.0
+time_pause_minimum = 2.0
+time_pause_maximum = 3.0
+
+[node name="LimitsVisualizer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SoftLimitLeft" type="ColorRect" parent="LimitsVisualizer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 1.0
+grow_vertical = 2
+color = Color(1, 0, 1, 0.49803922)
+
+[node name="HardLimitLeft" type="ColorRect" parent="LimitsVisualizer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 1.0
+grow_vertical = 2
+color = Color(1, 0, 0, 1)
+
+[node name="SoftLimitRight" type="ColorRect" parent="LimitsVisualizer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+color = Color(1, 0, 1, 0.49803922)
+
+[node name="HardLimitRight" type="ColorRect" parent="LimitsVisualizer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+color = Color(1, 0, 0, 1)
 
 [node name="Settings" type="PanelContainer" parent="."]
-visible = false
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -40.0
-offset_right = 94.0
-offset_bottom = -200.0
-grow_vertical = 0
+anchors_preset = -1
+anchor_top = 0.5
+anchor_bottom = 0.5
+grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Settings"]
+[node name="v1" type="VBoxContainer" parent="Settings"]
 layout_mode = 2
+theme = SubResource("Theme_lquwl")
 alignment = 2
 
-[node name="Button" type="Button" parent="Settings/VBoxContainer"]
+[node name="WallHard" type="PanelContainer" parent="Settings/v1"]
 layout_mode = 2
-text = "TESTY TEST
-"
+
+[node name="v2" type="VBoxContainer" parent="Settings/v1/WallHard"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/v1/WallHard/v2"]
+layout_mode = 2
+theme_type_variation = &"LabelHardLimit"
+text = "Hard Limits"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Left" type="HBoxContainer" parent="Settings/v1/WallHard/v2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/v1/WallHard/v2/Left"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+theme_type_variation = &"LabelHardLimit"
+text = "Left"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="HSlider" parent="Settings/v1/WallHard/v2/Left"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_type_variation = &"HSliderHardLimit"
+
+[node name="HSeparator" type="HSeparator" parent="Settings/v1/WallHard/v2"]
+layout_mode = 2
+
+[node name="Right" type="HBoxContainer" parent="Settings/v1/WallHard/v2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/v1/WallHard/v2/Right"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+theme_type_variation = &"LabelHardLimit"
+text = "Right"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="HSlider" parent="Settings/v1/WallHard/v2/Right"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_type_variation = &"HSliderHardLimit"
+
+[node name="WallSoft" type="PanelContainer" parent="Settings/v1"]
+layout_mode = 2
+
+[node name="v2" type="VBoxContainer" parent="Settings/v1/WallSoft"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/v1/WallSoft/v2"]
+layout_mode = 2
+theme_type_variation = &"LabelSoftLimit"
+text = "Soft Limits"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Left" type="HBoxContainer" parent="Settings/v1/WallSoft/v2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/v1/WallSoft/v2/Left"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+theme_type_variation = &"LabelSoftLimit"
+text = "Left"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="HSlider" parent="Settings/v1/WallSoft/v2/Left"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="Settings/v1/WallSoft/v2"]
+layout_mode = 2
+
+[node name="Right" type="HBoxContainer" parent="Settings/v1/WallSoft/v2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/v1/WallSoft/v2/Right"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+theme_type_variation = &"LabelSoftLimit"
+text = "Right"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Value" type="HSlider" parent="Settings/v1/WallSoft/v2/Right"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2

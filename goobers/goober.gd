@@ -7,8 +7,8 @@ const FLOOR_POSITION = 100.0
 # const GRAVITY = 300.0
 # const JUMPFORCE = 300.0
 # const HOPFORCE = 75.0
-const WALL_OFFSET = 200.0
-const HARDWALL_OFFSET = -100.0
+# const WALL_OFFSET = 200.0
+# const HARDWALL_OFFSET = -0.0
 
 # const TIME_JUMP_MINIMUM = 5.0
 # const TIME_JUMP_MAXIMUM = 7.5
@@ -19,20 +19,20 @@ const HARDWALL_OFFSET = -100.0
 # const TIME_TOPAUSE_MINIMUM = 1.0
 # const TIME_TOPAUSE_MAXIMUM = 3.0
 
-@export var speed = 300.0
-@export var accelerate = 600.0
-@export var gravity = 300.0
-@export var jumpforce = 300.0
-@export var hopforce = 75.0
+@export var speed:float = 300.0
+@export var accelerate:float = 600.0
+@export var gravity:float = 300.0
+@export var jumpforce:float = 300.0
+@export var hopforce:float = 75.0
 
-@export var time_jump_minimum = 5.0
-@export var time_jump_maximum = 7.5
+@export var time_jump_minimum:float = 5.0
+@export var time_jump_maximum:float = 7.5
 
-@export var time_topause_minimum = 2.0
-@export var time_topause_maximum = 10.0
+@export var time_topause_minimum:float = 2.0
+@export var time_topause_maximum:float = 10.0
 
-@export var time_pause_minimum = 1.0
-@export var time_pause_maximum = 5.0
+@export var time_pause_minimum:float = 1.0
+@export var time_pause_maximum:float = 5.0
 
 var jump_flip:float = TAU
 
@@ -90,11 +90,13 @@ var is_on_floor:bool :
 
 var is_beyond_left_side:bool :
 	get():
-		return position.x < WALL_OFFSET
+		var mainnode:MainNode = get_tree().get_first_node_in_group(&"main_node")
+		return position.x < mainnode.softlimit_left.value
 
 var is_beyond_right_side:bool :
 	get():
-		return position.x > resolution.x - WALL_OFFSET
+		var mainnode:MainNode = get_tree().get_first_node_in_group(&"main_node")
+		return position.x > mainnode.softlimit_right.value
 
 var is_going_left:bool :
 	get():
@@ -135,7 +137,7 @@ func _input(event: InputEvent) -> void:
 			dragging_base = global_position
 			dragging_delta = Vector2.ZERO
 
-		elif left_click_released:
+		if left_click_released:
 			dragging = false
 		
 	if event is InputEventMouseMotion:
@@ -213,12 +215,13 @@ func _process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, target_hori, accelerate*delta)
 
 
+	var mainnode:MainNode = get_tree().get_first_node_in_group(&"main_node")
 	if dragging:
 		position = dragging_base + dragging_delta
 		velocity = Vector2.ZERO
 	else:
 		position += velocity*delta
-		position.x = clampf(position.x, HARDWALL_OFFSET, resolution.x - HARDWALL_OFFSET)
+	position.x = clampf(position.x, mainnode.hardlimit_left.value, mainnode.hardlimit_right.value)
 
 # Utility function for rounding to a decimal point, honestly Godot should add a builtin one.
 static func round_to_dec(num, digit):
