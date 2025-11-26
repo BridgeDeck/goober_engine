@@ -40,6 +40,11 @@ main_node=""
 
 pointing/emulate_mouse_from_touch=false
 
+[physics]
+
+2d/physics_engine="Dummy"
+3d/physics_engine="Dummy"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

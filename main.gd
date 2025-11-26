@@ -31,6 +31,8 @@ func _ready() -> void:
 	softlimit_left.value = hardlimit_left.value + 200
 	softlimit_right.value = hardlimit_right.value - 200
 
+	get_viewport().disable_3d = true
+
 # From smallest x to largest x position
 func sort_x_position(input:Array[Node2D])->Array[Node2D]:
 	var item_idx = 1

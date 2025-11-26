@@ -221,7 +221,11 @@ func _process(delta: float) -> void:
 		velocity = Vector2.ZERO
 	else:
 		position += velocity*delta
-	position.x = clampf(position.x, mainnode.hardlimit_left.value, mainnode.hardlimit_right.value)
+	
+	
+	if position.x > mainnode.hardlimit_right.value or position.x < mainnode.hardlimit_left.value:
+		velocity.x = -velocity.x
+		position.x = clampf(position.x, mainnode.hardlimit_left.value, mainnode.hardlimit_right.value)
 
 # Utility function for rounding to a decimal point, honestly Godot should add a builtin one.
 static func round_to_dec(num, digit):

@@ -76,11 +76,11 @@ time_pause_maximum = 1.0
 [node name="Goober3" parent="." instance=ExtResource("5_7mycd")]
 position = Vector2(750, 360)
 speed = 450.0
-accelerate = 900.0
+accelerate = 1350.0
 time_jump_minimum = 10.0
 time_jump_maximum = 25.0
-time_topause_minimum = 10.0
-time_topause_maximum = 20.0
+time_topause_minimum = 3.0
+time_topause_maximum = 6.0
 time_pause_maximum = 1.0
 
 [node name="Goober4" parent="." instance=ExtResource("6_7mycd")]
