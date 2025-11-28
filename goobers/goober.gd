@@ -19,20 +19,7 @@ const FLOOR_POSITION = 100.0
 # const TIME_TOPAUSE_MINIMUM = 1.0
 # const TIME_TOPAUSE_MAXIMUM = 3.0
 
-@export var speed:float = 300.0
-@export var accelerate:float = 600.0
-@export var gravity:float = 300.0
-@export var jumpforce:float = 300.0
-@export var hopforce:float = 75.0
-
-@export var time_jump_minimum:float = 5.0
-@export var time_jump_maximum:float = 7.5
-
-@export var time_topause_minimum:float = 2.0
-@export var time_topause_maximum:float = 10.0
-
-@export var time_pause_minimum:float = 1.0
-@export var time_pause_maximum:float = 5.0
+@export var config:GooberConfig = GooberConfig.new()
 
 var jump_flip:float = TAU
 
@@ -115,9 +102,9 @@ var dragging_base:Vector2 = Vector2.ZERO
 var dragging_delta:Vector2 = Vector2.ZERO
 
 func _ready() -> void:
-	horizontal_speed = speed
-	to_pause = time_topause_maximum
-	to_jump = time_jump_minimum
+	horizontal_speed = config.speed
+	to_pause = config.time_topause_maximum
+	to_jump = config.time_jump_minimum
 	# $MouseOver.mouse_entered.connect(func():
 	# 	is_mouse_over = true)
 	# $MouseOver.mouse_exited.connect(func():
@@ -159,11 +146,11 @@ func _process(delta: float) -> void:
 		
 		if to_hop:
 			to_hop = false
-			to_jump = lerpf(time_jump_minimum, time_jump_maximum, randf())
-			velocity.y = -hopforce
+			to_jump = lerpf(config.time_jump_minimum, config.time_jump_maximum, randf())
+			velocity.y = -config.hopforce
 		elif to_jump <= 0.0:
-			to_jump = lerpf(time_jump_minimum, time_jump_maximum, randf())
-			velocity.y = -jumpforce
+			to_jump = lerpf(config.time_jump_minimum, config.time_jump_maximum, randf())
+			velocity.y = -config.jumpforce
 			var rotate_tween = create_tween().tween_property(
 				self,
 				"rotation",
@@ -177,13 +164,13 @@ func _process(delta: float) -> void:
 			velocity.y = 0.0
 	else:
 		frame = 1
-		velocity.y += gravity*delta
+		velocity.y += config.gravity*delta
 
 
 	if is_beyond_left_side:
-		horizontal_speed = speed
+		horizontal_speed = config.speed
 	elif is_beyond_right_side:
-		horizontal_speed = -speed
+		horizontal_speed = -config.speed
 
 
 	var target_hori = horizontal_speed
@@ -196,8 +183,8 @@ func _process(delta: float) -> void:
 		if to_pause <= 0.0 and is_on_floor:
 			if randi() % 2 == 1:
 				horizontal_speed = -horizontal_speed
-			to_pause = lerpf(time_topause_minimum, time_topause_maximum, randf())
-			pause_time = lerpf(time_pause_minimum, time_pause_maximum, randf())
+			to_pause = lerpf(config.time_topause_minimum, config.time_topause_maximum, randf())
+			pause_time = lerpf(config.time_pause_minimum, config.time_pause_maximum, randf())
 	
 	if $Debug.visible:
 		$Debug/ToPause/Value.text = str(round_to_dec(to_pause, 2))
@@ -212,7 +199,7 @@ func _process(delta: float) -> void:
 		jump_flip = -TAU
 
 	if is_on_floor:
-		velocity.x = move_toward(velocity.x, target_hori, accelerate*delta)
+		velocity.x = move_toward(velocity.x, target_hori, config.acceleration*delta)
 
 
 	var mainnode:MainNode = get_tree().get_first_node_in_group(&"main_node")

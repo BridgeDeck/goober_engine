@@ -67,46 +67,16 @@ color = Color(0, 0, 0, 0.09803922)
 
 [node name="Goober2" parent="." instance=ExtResource("4_lquwl")]
 position = Vector2(91, 195)
-time_jump_minimum = 1.0
-time_jump_maximum = 4.0
-time_topause_minimum = 7.5
-time_topause_maximum = 15.0
-time_pause_maximum = 1.0
 
 [node name="Goober3" parent="." instance=ExtResource("5_7mycd")]
 position = Vector2(750, 360)
-speed = 450.0
-accelerate = 1350.0
-time_jump_minimum = 10.0
-time_jump_maximum = 25.0
-time_topause_minimum = 3.0
-time_topause_maximum = 6.0
-time_pause_maximum = 1.0
 
 [node name="Goober4" parent="." instance=ExtResource("6_7mycd")]
 position = Vector2(291, 351)
-speed = 100.0
-accelerate = 100.0
-gravity = 100.0
-jumpforce = 100.0
-time_jump_minimum = 15.0
-time_jump_maximum = 30.0
-time_topause_minimum = 20.0
-time_topause_maximum = 25.0
-time_pause_minimum = 5.0
-time_pause_maximum = 10.0
 
 [node name="Goober" parent="." instance=ExtResource("4_1bvp3")]
 process_priority = 1
 position = Vector2(550, 71)
-speed = 200.0
-accelerate = 400.0
-jumpforce = 150.0
-time_jump_minimum = 10.0
-time_jump_maximum = 10.0
-time_topause_maximum = 3.0
-time_pause_minimum = 2.0
-time_pause_maximum = 3.0
 
 [node name="LimitsVisualizer" type="Control" parent="."]
 layout_mode = 3
@@ -151,7 +121,7 @@ grow_vertical = 2
 color = Color(1, 0, 0, 1)
 
 [node name="Settings" type="PanelContainer" parent="."]
-anchors_preset = -1
+anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 grow_vertical = 2
